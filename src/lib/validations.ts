@@ -2,7 +2,7 @@
  * Validation Schemas
  *
  * Zod validation schemas for forms and API data validation
- * based on the BloomTech Work Tracker API requirements.
+ * based on the BloomTeq Work Tracker API requirements.
  * Updated to work with ISO datetime strings.
  */
 

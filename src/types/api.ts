@@ -2,7 +2,7 @@
  * Common API Types
  *
  * Shared TypeScript interfaces for API responses, errors, and pagination
- * based on the BloomTech Work Tracker API documentation.
+ * based on the BloomTeq Work Tracker API documentation.
  */
 
 // Generic API response wrapper

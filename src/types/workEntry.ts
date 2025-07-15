@@ -2,7 +2,7 @@
  * Work Entry Types
  *
  * TypeScript interfaces for work entry-related data structures
- * based on the BloomTech Work Tracker API documentation.
+ * based on the BloomTeq Work Tracker API documentation.
  * Updated to match actual API structure with ISO datetime timestamps.
  */
 

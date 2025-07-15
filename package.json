@@ -1,8 +1,9 @@
 {
-  "name": "task-bloomtech-frontend",
+  "name": "task-bloomteq-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Rijad Kuloglija",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

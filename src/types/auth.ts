@@ -2,7 +2,7 @@
  * Authentication Types
  *
  * TypeScript interfaces for all authentication-related data structures
- * based on the BloomTech Work Tracker API documentation.
+ * based on the BloomTeq Work Tracker API documentation.
  */
 
 // User profile interface

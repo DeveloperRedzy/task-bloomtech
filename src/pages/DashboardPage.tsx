@@ -7,7 +7,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserProfile } from '../components/auth';
 import { useAuth } from '../hooks/auth';
 import { useWorkEntries } from '../hooks/workEntries';
 import {
@@ -44,76 +43,57 @@ const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Dashboard Grid */}
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-        {/* User Profile Section */}
-        <div className='lg:col-span-1'>
-          <Card>
-            <CardHeader>
-              <CardTitle>Profile</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <UserProfile />
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Work Entries */}
-        <div className='lg:col-span-2'>
-          <Card>
-            <CardHeader>
-              <div className='flex items-center justify-between'>
-                <CardTitle>Recent Work Entries</CardTitle>
-                <Link to='/work-entries'>
-                  <Button variant='outline' size='sm'>
-                    View All
-                  </Button>
-                </Link>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {entriesLoading ? (
-                <div className='text-center py-8'>
-                  <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto'></div>
-                  <p className='text-sm text-muted-foreground mt-2'>
-                    Loading entries...
-                  </p>
+      {/* Recent Work Entries */}
+      <Card>
+        <CardHeader>
+          <div className='flex items-center justify-between'>
+            <CardTitle>Recent Work Entries</CardTitle>
+            <Link to='/work-entries'>
+              <Button variant='outline' size='sm'>
+                View All
+              </Button>
+            </Link>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {entriesLoading ? (
+            <div className='text-center py-8'>
+              <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto'></div>
+              <p className='text-sm text-muted-foreground mt-2'>
+                Loading entries...
+              </p>
+            </div>
+          ) : !recentEntries?.data?.length ? (
+            <div className='text-center py-8'>
+              <p className='text-muted-foreground mb-4'>No work entries yet</p>
+              <Link to='/work-entries'>
+                <Button>Create Your First Entry</Button>
+              </Link>
+            </div>
+          ) : (
+            <div className='space-y-3'>
+              {recentEntries.data.map((entry) => (
+                <div
+                  key={entry.id}
+                  className='flex items-center justify-between p-3 border rounded-lg'
+                >
+                  <div>
+                    <p className='font-medium'>{entry.description}</p>
+                    <p className='text-sm text-muted-foreground'>
+                      {new Date(entry.startTime).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className='text-right'>
+                    <p className='font-medium'>
+                      {formatDuration(entry.duration)}
+                    </p>
+                  </div>
                 </div>
-              ) : !recentEntries?.data?.length ? (
-                <div className='text-center py-8'>
-                  <p className='text-muted-foreground mb-4'>
-                    No work entries yet
-                  </p>
-                  <Link to='/work-entries'>
-                    <Button>Create Your First Entry</Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className='space-y-3'>
-                  {recentEntries.data.map((entry) => (
-                    <div
-                      key={entry.id}
-                      className='flex items-center justify-between p-3 border rounded-lg'
-                    >
-                      <div>
-                        <p className='font-medium'>{entry.description}</p>
-                        <p className='text-sm text-muted-foreground'>
-                          {new Date(entry.startTime).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className='text-right'>
-                        <p className='font-medium'>
-                          {formatDuration(entry.duration)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Statistics Dashboard */}
       <StatsDashboard />

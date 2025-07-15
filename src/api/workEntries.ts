@@ -2,7 +2,7 @@
  * Work Entries API Service
  *
  * API functions for work entry-related operations.
- * Implements all endpoints from the BloomTech Work Tracker API.
+ * Implements all endpoints from the BloomTeq Work Tracker API.
  * Updated to work with ISO datetime format.
  */
 

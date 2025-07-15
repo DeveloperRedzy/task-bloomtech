@@ -303,10 +303,10 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
                       className='bg-primary h-2 rounded'
                       style={{
                         width: `${Math.min((entry.duration / 8) * 100, 100)}%`,
-                        minWidth: '20px',
+                        minWidth: '50px',
                       }}
                     />
-                    <span className='text-sm font-medium w-16 text-right'>
+                    <span className='text-sm font-medium w-50 text-right'>
                       {formatDuration(entry.duration)}
                     </span>
                   </div>

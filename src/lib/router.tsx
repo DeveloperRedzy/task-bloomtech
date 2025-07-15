@@ -2,7 +2,7 @@
  * Router Configuration
  *
  * React Router v6 setup with authentication guards and route definitions
- * for the BloomTech Work Tracker application.
+ * for the BloomTeq Work Tracker application.
  */
 
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';

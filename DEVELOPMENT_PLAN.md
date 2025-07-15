@@ -1,8 +1,8 @@
-# BloomTech Work Tracker - Development Plan
+# BloomTeq Work Tracker - Development Plan
 
 ## Project Overview
 
-Building a comprehensive work time tracking application using React, TypeScript, and TanStack Query for BloomTech employees.
+Building a comprehensive work time tracking application using React, TypeScript, and TanStack Query for BloomTeq employees.
 
 ## Current Status: **75% Complete (7.5/10 Phases)**
 

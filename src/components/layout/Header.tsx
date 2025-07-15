@@ -3,11 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../ui/button';
 import { UserProfile } from '../auth/UserProfile';
-import {
-  SimpleDropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from '../ui/dropdown-menu';
+import { SimpleDropdownMenu, DropdownMenuSeparator } from '../ui/dropdown-menu';
 
 const Header: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -29,7 +25,7 @@ const Header: React.FC = () => {
               </span>
             </div>
             <span className='hidden font-bold sm:inline-block'>
-              BloomTech Tracker
+              BloomTeq Tracker
             </span>
           </Link>
         </div>
@@ -78,9 +74,9 @@ const Header: React.FC = () => {
               {/* User menu */}
               <SimpleDropdownMenu
                 trigger={
-                  <div className='relative h-8 w-8 rounded-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer'>
-                    <div className='h-6 w-6 rounded-full bg-muted flex items-center justify-center'>
-                      <span className='text-xs font-medium'>
+                  <div className='relative h-8 w-8 rounded-full inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer'>
+                    <div className='h-8 w-8 rounded-full bg-primary flex items-center justify-center'>
+                      <span className='text-xs font-semibold text-primary-foreground'>
                         {user.firstName.charAt(0)}
                         {user.lastName.charAt(0)}
                       </span>
@@ -89,9 +85,15 @@ const Header: React.FC = () => {
                 }
                 align='end'
               >
-                <div className='flex items-center justify-start gap-2 p-2'>
+                <div className='flex items-center justify-start gap-3 p-3'>
+                  <div className='h-10 w-10 rounded-full bg-primary flex items-center justify-center'>
+                    <span className='text-sm font-semibold text-primary-foreground'>
+                      {user.firstName.charAt(0)}
+                      {user.lastName.charAt(0)}
+                    </span>
+                  </div>
                   <div className='flex flex-col space-y-1 leading-none'>
-                    <p className='font-medium'>
+                    <p className='font-semibold text-sm'>
                       {user.firstName} {user.lastName}
                     </p>
                     <p className='text-xs text-muted-foreground'>
@@ -99,17 +101,6 @@ const Header: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => (window.location.href = '/profile')}
-                >
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => (window.location.href = '/settings')}
-                >
-                  Settings
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <UserProfile />
               </SimpleDropdownMenu>

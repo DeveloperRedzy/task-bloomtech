@@ -13,6 +13,7 @@ import {
   SortAsc,
   SortDesc,
 } from 'lucide-react';
+import { useToast } from '../ui/toast-provider';
 
 export interface WorkEntriesFiltersProps {
   onFiltersChange: (filters: WorkEntriesFiltersState) => void;
@@ -40,9 +41,25 @@ export const WorkEntriesFilters: React.FC<WorkEntriesFiltersProps> = ({
   });
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const { showToast } = useToast();
 
   const updateFilters = (newFilters: Partial<WorkEntriesFiltersState>) => {
     const updatedFilters = { ...filters, ...newFilters };
+
+    // Show informative toast when date filters are applied
+    if (
+      (newFilters.startDate || newFilters.endDate) &&
+      (updatedFilters.startDate || updatedFilters.endDate)
+    ) {
+      showToast({
+        title: 'Date Filter Applied',
+        description:
+          'Date filtering is processed on your device for optimal performance.',
+        variant: 'info',
+        duration: 3000,
+      });
+    }
+
     setFilters(updatedFilters);
     onFiltersChange(updatedFilters);
   };

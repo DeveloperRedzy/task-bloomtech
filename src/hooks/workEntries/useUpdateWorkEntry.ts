@@ -38,7 +38,9 @@ export const useUpdateWorkEntry = () => {
       // Show success toast
       toast.success(
         TOAST_MESSAGES.WORK_ENTRIES.UPDATE_SUCCESS,
-        `Work entry for ${updatedWorkEntry.date} updated successfully`
+        `Work entry for ${
+          updatedWorkEntry.startTime.split('T')[0]
+        } updated successfully`
       );
     },
     onError: (error) => {

@@ -90,6 +90,13 @@ Building a comprehensive work time tracking application using React, TypeScript,
 - [x] **Duration Range Filter**: Implemented client-side filtering for min/max hours range
 - [x] **Time Format Display**: Updated Average Hours to show "2h 30m" instead of "2.50h"
 
+**UI/UX Improvements:**
+
+- [x] **CSS Build Issues**: Fixed "Unknown at rule @apply" error by properly importing Tailwind directives
+- [x] **Dashboard Design**: Removed gray background containers breaking the design consistency
+- [x] **Layout Consistency**: Aligned dashboard page layout structure with work entries page
+- [x] **Navigation Alignment**: Fixed navbar centering and ensured content alignment with header elements
+
 **Technical Improvements:**
 
 - **Client-Side Filtering**: Enhanced WorkEntriesTable with proper search and duration filtering
@@ -106,6 +113,10 @@ Building a comprehensive work time tracking application using React, TypeScript,
 - `EditWorkEntryForm.tsx`: Corrected timezone handling in form pre-population
 - `validations.ts`: Fixed time conversion from form input to API format
 - `StatsDashboard.tsx`: Applied consistent time formatting for statistics
+- `index.css`: Fixed Tailwind CSS imports to enable @apply directive
+- `DashboardPage.tsx`: Removed gray backgrounds and aligned layout structure with work entries
+- `Header.tsx`: Fixed navbar centering and responsive layout structure
+- `Layout.tsx`: Unified container styling for consistent content alignment
 
 **Quality Improvements:**
 
@@ -186,6 +197,9 @@ Building a comprehensive work time tracking application using React, TypeScript,
 - ~~Timezone issues causing time shifts~~ ✅ **RESOLVED**
 - ~~Duration range filter not functioning~~ ✅ **RESOLVED**
 - ~~Sort By dropdown API parameter errors~~ ✅ **RESOLVED**
+- ~~CSS build errors with @apply directive~~ ✅ **RESOLVED**
+- ~~Dashboard gray container design issues~~ ✅ **RESOLVED**
+- ~~Layout inconsistencies between pages~~ ✅ **RESOLVED**
 - Mobile responsiveness needs refinement
 - Need to add proper error handling for network failures in edge cases
 

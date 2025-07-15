@@ -1,6 +1,7 @@
 // Main components
 export { default as WorkEntriesTable } from './WorkEntriesTable';
 export { default as CreateWorkEntryModal } from './CreateWorkEntryModal';
+export { default as DeleteWorkEntryDialog } from './DeleteWorkEntryDialog';
 export { default as EditWorkEntryModal } from './EditWorkEntryModal';
 export { default as ViewWorkEntryModal } from './ViewWorkEntryModal';
 

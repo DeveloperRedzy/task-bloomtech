@@ -38,6 +38,10 @@ interface WorkEntriesResponse {
 export const getWorkEntries = async (
   filters: WorkEntryFilters = {}
 ): Promise<WorkEntriesResponse> => {
+  // NOTE: Server-side date filtering is currently disabled due to security validation
+  // rejecting date parameters as "potentially harmful content". Date filtering is
+  // now handled client-side in the WorkEntriesTable component.
+
   // Build query parameters
   const searchParams = new URLSearchParams();
 
@@ -45,9 +49,16 @@ export const getWorkEntries = async (
   if (filters.page) searchParams.set('page', filters.page.toString());
   if (filters.limit) searchParams.set('limit', filters.limit.toString());
 
-  // Add filtering parameters
-  if (filters.startDate) searchParams.set('startDate', filters.startDate);
-  if (filters.endDate) searchParams.set('endDate', filters.endDate);
+  // TEMPORARILY DISABLED: Server rejects date filters as "potentially harmful content"
+  // We'll handle date filtering client-side instead
+  // if (filters.startDate) {
+  //   const cleanStartDate = filters.startDate.trim();
+  //   searchParams.set('startDate', cleanStartDate);
+  // }
+  // if (filters.endDate) {
+  //   const cleanEndDate = filters.endDate.trim();
+  //   searchParams.set('endDate', cleanEndDate);
+  // }
 
   // Add sorting parameters
   if (filters.sortBy) searchParams.set('sortBy', filters.sortBy);
@@ -165,13 +176,15 @@ export const deleteWorkEntry = async (id: string | number): Promise<void> => {
  * @returns Promise with work statistics
  */
 export const getWorkStats = async (
-  filters: WorkStatsFilters = {}
+  _filters: WorkStatsFilters = {}
 ): Promise<WorkEntryStats> => {
   // Build query parameters for date filtering
   const searchParams = new URLSearchParams();
 
-  if (filters.startDate) searchParams.set('startDate', filters.startDate);
-  if (filters.endDate) searchParams.set('endDate', filters.endDate);
+  // TEMPORARILY DISABLED: Server rejects date filters as "potentially harmful content"
+  // We'll handle date filtering client-side in the components that use this
+  // if (filters.startDate) searchParams.set('startDate', filters.startDate);
+  // if (filters.endDate) searchParams.set('endDate', filters.endDate);
 
   const queryString = searchParams.toString();
   const endpoint = queryString

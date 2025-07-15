@@ -32,7 +32,9 @@ export const useCreateWorkEntry = () => {
       // Show success toast
       toast.success(
         TOAST_MESSAGES.WORK_ENTRIES.CREATE_SUCCESS,
-        `Work entry for ${newWorkEntry.date} created successfully`
+        `Work entry for ${
+          newWorkEntry.startTime.split('T')[0]
+        } created successfully`
       );
     },
     onError: (error) => {

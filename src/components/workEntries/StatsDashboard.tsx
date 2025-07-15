@@ -15,7 +15,6 @@ import LoadingSpinner from '../ui/loading-spinner';
 import { Alert } from '../ui/alert';
 
 interface StatsDashboardProps {
-  filters?: any;
   dateRange?: {
     startDate?: string;
     endDate?: string;
@@ -23,7 +22,6 @@ interface StatsDashboardProps {
 }
 
 export const StatsDashboard: React.FC<StatsDashboardProps> = ({
-  filters = {},
   dateRange = {},
 }) => {
   const {
@@ -37,7 +35,9 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
     limit: 30,
     sortBy: 'startTime',
     sortOrder: 'desc',
-    ...dateRange,
+    // Only include dateRange fields if they have values
+    ...(dateRange?.startDate && { startDate: dateRange.startDate }),
+    ...(dateRange?.endDate && { endDate: dateRange.endDate }),
   });
 
   const workEntries = recentEntries?.data || [];
@@ -168,7 +168,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>
-              {workStats?.totalHours?.toFixed(2) || '0.00'}h
+              {formatDuration(workStats?.totalHours || 0)}
             </div>
             <p className='text-xs text-muted-foreground'>Total time tracked</p>
           </CardContent>
@@ -211,7 +211,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>
-              {metrics?.thisWeekHours?.toFixed(2) || '0.00'}h
+              {formatDuration(metrics?.thisWeekHours || 0)}
             </div>
             <p className='text-xs text-muted-foreground flex items-center'>
               {metrics?.weeklyChange !== undefined && (
@@ -240,7 +240,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             </CardHeader>
             <CardContent>
               <div className='text-xl font-bold'>
-                {metrics.avgDailyHours.toFixed(2)}h
+                {formatDuration(metrics.avgDailyHours)}
               </div>
               <p className='text-xs text-muted-foreground'>
                 Based on {metrics.workingDays} working days
@@ -256,7 +256,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
             </CardHeader>
             <CardContent>
               <div className='text-xl font-bold'>
-                {metrics.mostProductiveDay.hours.toFixed(2)}h
+                {formatDuration(metrics.mostProductiveDay.hours)}
               </div>
               <p className='text-xs text-muted-foreground'>
                 on {metrics.mostProductiveDay.date}
@@ -290,7 +290,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
           </CardHeader>
           <CardContent>
             <div className='space-y-2'>
-              {workEntries.slice(0, 7).map((entry, index) => (
+              {workEntries.slice(0, 7).map((entry) => (
                 <div
                   key={entry.id}
                   className='flex items-center justify-between'
@@ -306,8 +306,8 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
                         minWidth: '20px',
                       }}
                     />
-                    <span className='text-sm font-medium w-12 text-right'>
-                      {entry.duration}h
+                    <span className='text-sm font-medium w-16 text-right'>
+                      {formatDuration(entry.duration)}
                     </span>
                   </div>
                 </div>

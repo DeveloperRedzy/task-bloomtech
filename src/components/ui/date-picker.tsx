@@ -71,6 +71,43 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 }) => {
   const today = new Date().toISOString().split('T')[0];
 
+  // Validation helper
+  const validateDateRange = (start?: string, end?: string) => {
+    if (start && end) {
+      const startDateObj = new Date(start);
+      const endDateObj = new Date(end);
+
+      if (startDateObj > endDateObj) {
+        return 'Start date must be before or equal to end date';
+      }
+    }
+    return undefined;
+  };
+
+  const dateRangeError = validateDateRange(startDate, endDate);
+
+  const handleStartDateChange = (date: string) => {
+    // Validate date format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (date && !dateRegex.test(date)) {
+      console.warn('Invalid date format:', date);
+      return;
+    }
+
+    onStartDateChange(date);
+  };
+
+  const handleEndDateChange = (date: string) => {
+    // Validate date format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (date && !dateRegex.test(date)) {
+      console.warn('Invalid date format:', date);
+      return;
+    }
+
+    onEndDateChange(date);
+  };
+
   return (
     <div className={cn('space-y-2', className)}>
       {label && (
@@ -79,7 +116,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
       <div className='flex gap-2 items-center'>
         <DatePicker
           value={startDate}
-          onChange={onStartDateChange}
+          onChange={handleStartDateChange}
           placeholder='Start date'
           disabled={disabled}
           max={endDate || today}
@@ -88,7 +125,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
         <span className='text-sm text-muted-foreground'>to</span>
         <DatePicker
           value={endDate}
-          onChange={onEndDateChange}
+          onChange={handleEndDateChange}
           placeholder='End date'
           disabled={disabled}
           min={startDate}
@@ -96,7 +133,9 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
           className='flex-1'
         />
       </div>
-      {error && <p className='text-sm text-destructive'>{error}</p>}
+      {(error || dateRangeError) && (
+        <p className='text-sm text-destructive'>{error || dateRangeError}</p>
+      )}
     </div>
   );
 };

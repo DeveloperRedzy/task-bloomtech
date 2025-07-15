@@ -35,23 +35,26 @@ const WorkEntriesPage: React.FC = () => {
   });
 
   // Pagination state
-  const [pagination, setPagination] = useState({
+  const pagination = {
     page: 1,
     limit: 10,
-  });
+  };
 
-  // Combined filters for API calls
+  // Combined filters for API calls - only include defined values to prevent API errors
+  // Use higher limit when date filters are active since we're doing client-side filtering
+  const hasDateFilter = filters.startDate || filters.endDate;
   const apiFilters = {
     ...pagination,
-    // Map filter fields to API expected format
-    startDate: filters.startDate,
-    endDate: filters.endDate,
-    searchTerm: filters.searchTerm,
-    minHours: filters.minHours,
-    maxHours: filters.maxHours,
-    // Sort fields already match API expectations
+    // Increase limit when date filtering to get more data for client-side filtering
+    limit: hasDateFilter ? Math.max(pagination.limit, 100) : pagination.limit,
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
+    // Pass date filters for client-side filtering (not sent to API)
+    ...(filters.startDate && { startDate: filters.startDate }),
+    ...(filters.endDate && { endDate: filters.endDate }),
+    ...(filters.searchTerm && { searchTerm: filters.searchTerm }),
+    ...(filters.minHours !== undefined && { minHours: filters.minHours }),
+    ...(filters.maxHours !== undefined && { maxHours: filters.maxHours }),
   };
 
   // Fetch work statistics
@@ -118,8 +121,7 @@ const WorkEntriesPage: React.FC = () => {
             <div className='text-2xl font-bold'>
               {statsLoading
                 ? '...'
-                : workStats?.totalHours?.toFixed(2) || '0.00'}
-              h
+                : formatDuration(workStats?.totalHours || 0)}
             </div>
             <p className='text-xs text-muted-foreground'>Total time tracked</p>
           </CardContent>

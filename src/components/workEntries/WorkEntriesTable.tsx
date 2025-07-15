@@ -16,6 +16,7 @@ import {
 } from '../ui';
 import { useWorkEntries } from '../../hooks/workEntries';
 import { useDeleteWorkEntry } from '../../hooks/workEntries/useDeleteWorkEntry';
+import DeleteWorkEntryDialog from './DeleteWorkEntryDialog';
 import type { WorkEntry } from '../../types/workEntry';
 import type { UseWorkEntriesParams } from '../../hooks/workEntries/useWorkEntries';
 import { formatDateTime, formatDuration } from '../../api/workEntries';
@@ -35,6 +36,10 @@ const WorkEntriesTable: React.FC<WorkEntriesTableProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(filters.page || 1);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [workEntryToDelete, setWorkEntryToDelete] = useState<WorkEntry | null>(
+    null
+  );
 
   const {
     data: workEntriesData,
@@ -49,20 +54,18 @@ const WorkEntriesTable: React.FC<WorkEntriesTableProps> = ({
 
   const deleteWorkEntryMutation = useDeleteWorkEntry();
 
-  const handleDelete = async (workEntry: WorkEntry) => {
-    if (
-      !confirm(
-        `Are you sure you want to delete the work entry from ${formatDateTime(
-          workEntry.startTime
-        )}?`
-      )
-    ) {
-      return;
-    }
+  const handleDelete = (workEntry: WorkEntry) => {
+    setWorkEntryToDelete(workEntry);
+    setDeleteDialogOpen(true);
+  };
 
-    setDeletingId(workEntry.id);
+  const handleConfirmDelete = async () => {
+    if (!workEntryToDelete) return;
+
+    setDeletingId(workEntryToDelete.id);
     try {
-      await deleteWorkEntryMutation.mutateAsync(workEntry.id);
+      await deleteWorkEntryMutation.mutateAsync(workEntryToDelete.id);
+      setWorkEntryToDelete(null);
     } catch (error) {
       console.error('Failed to delete work entry:', error);
     } finally {
@@ -111,7 +114,7 @@ const WorkEntriesTable: React.FC<WorkEntriesTableProps> = ({
     }
   };
 
-  // Client-side filtering for search term and duration range (since API doesn't support these)
+  // Client-side filtering for search term, duration range, and date range (since API doesn't support these)
   const filteredWorkEntries = React.useMemo(() => {
     if (!workEntriesData?.data?.length) {
       return [];
@@ -140,12 +143,31 @@ const WorkEntriesTable: React.FC<WorkEntriesTableProps> = ({
       );
     }
 
+    // Filter by date range (client-side since server rejects date parameters)
+    if (filters.startDate) {
+      const startDate = new Date(filters.startDate);
+      filtered = filtered.filter((entry) => {
+        const entryDate = new Date(entry.startTime.split('T')[0]);
+        return entryDate >= startDate;
+      });
+    }
+
+    if (filters.endDate) {
+      const endDate = new Date(filters.endDate);
+      filtered = filtered.filter((entry) => {
+        const entryDate = new Date(entry.startTime.split('T')[0]);
+        return entryDate <= endDate;
+      });
+    }
+
     return filtered;
   }, [
     workEntriesData?.data,
     filters.searchTerm,
     filters.minHours,
     filters.maxHours,
+    filters.startDate,
+    filters.endDate,
   ]);
 
   // Show loading skeleton
@@ -300,6 +322,15 @@ const WorkEntriesTable: React.FC<WorkEntriesTableProps> = ({
           />
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteWorkEntryDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        workEntry={workEntryToDelete}
+        onConfirm={handleConfirmDelete}
+        isLoading={!!deletingId}
+      />
     </div>
   );
 };

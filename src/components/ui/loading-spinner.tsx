@@ -1,16 +1,17 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 
-export interface LoadingSpinnerProps {
+export interface LoadingSpinnerProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'default' | 'primary' | 'secondary' | 'muted';
-  className?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 'md',
   variant = 'default',
   className,
+  ...props
 }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
@@ -34,6 +35,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         variantClasses[variant],
         className
       )}
+      {...props}
     />
   );
 };
